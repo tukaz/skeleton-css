@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!--
+      Need a visual blank slate?
+      Remove all code in `styles.css`!
+    -->
+    <style>
+      div.grid {
+  display: grid;
+  row-gap: 10px;
+}
+    </style>
+    <script type="module">
+    // Import stylesheets
+
+// Define the custom component
+class SkeletonComponent extends HTMLElement {
+  getHeightWithUnit(height) {
+    const units = ['em', 'rem', 'px'];
+    const hasUnit = units.some((unit) => height.includes(unit));
+    return !hasUnit ? `${height}px` : height;
+  }
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    const height = this.getAttribute('height') || '32px';
+
+    // Define the skeleton markup
+    this.shadowRoot.innerHTML = `
+      <style>
+        .skeleton {
+          width: 100%;
+          height: ${this.getHeightWithUnit(height)};
+          background-color: #8C93A62f;
+          animation: skeleton-animation 1.5s ease-in-out 0.5s infinite;
+        }
+        
+        @keyframes skeleton-animation {
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.4;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      </style>
+      
+      <div class="skeleton"></div>
+    `;
+  }
+}
+
+if (!customElements.get('ds-skeleton-web-component')) {
+  customElements.define('ds-skeleton-web-component', SkeletonComponent);
+}
+
+    </script>
+  </head>
+  <body>
+<div id="app">
+  <div class="grid">
+    <ds-skeleton-web-component height="200"></ds-skeleton-web-component>
+    <ds-skeleton-web-component height="100px"></ds-skeleton-web-component>
+    <ds-skeleton-web-component></ds-skeleton-web-component>
+    <ds-skeleton-web-component height="50"></ds-skeleton-web-component>
+    <ds-skeleton-web-component height="4rem"></ds-skeleton-web-component>
+  </div>
+</div>
+  </body>
+</html>
